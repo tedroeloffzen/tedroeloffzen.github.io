@@ -1,0 +1,77 @@
+= Interface became awesome in Java 8!!
+Ted Roeloffzen
+:hp-tags: java, interface, default method
+
+== Interfaces FTW!
+In een https://topicusonderwijs.github.io/2016/01/28/C-D-I-Vette-truukjes-met-Instance.html[vorig blog], en de daaraan gerelateerde blogs, is gesproken over CDI en alle toffe dingen die gaan kunnen worden met CDI.
+Een van de mooie zaken die je met CDI mooi op kunt lossen is dat je gemakkelijk één of meerdere instanties van een bepaalde interface kunt laten injecteren. 
+Dit bracht mij op het idee om eens goed te gaan kijken naar het type `interface`. + 
+
+De interface is toch één van de belangrijkste bouwstenen van Java. Buitengewoon handig bij het schrijven van een API, maar tot Java 8 ook wel een beetje beperkt. Wanneer je een implementatie van een interface methode wilde kunnen hergebruiken in meerdere classes, dan zat je alweer vaak vast aan een (abstracte) class, maar die past niet altijd in je class hierarchy. Dan moet je code gaan dupliceren of nog wat anders proberen. Gelukkig heeft Java 8 twee nieuwe features voor de interface toegevoegd.
+
+== Static methods
+Sinds Java 8 is het mogelijk om static methods toe te voegen aan interfaces.
+Voorheen hadden we 2 enums die een vrijwel identieke implementatie van een aantal methodes hadden.
+
+`BPVStatus`
+[source, java]
+----
+public static List<BPVStatus> getBronCommuniceerbareStatussen()
+{
+	List<BPVStatus> result = new ArrayList<BPVStatus>();
+	for (BPVStatus status : values())
+	{
+		if (status.isDuoCommuniceerbaar())
+		{
+			result.add(status);
+		}
+    }
+	return result;
+}
+----
+en bij `VerbintenisStatus`
+[source, java]
+----
+public static List<VerbintenisStatus> getBronCommuniceerbareStatussen()
+{
+	List<VerbintenisStatus> result = new ArrayList<VerbintenisStatus>();
+	for (VerbintenisStatus status : values())
+	{
+		if (status.isDuoCommuniceerbaar())
+		{
+			result.add(status);
+		}
+	}
+	return result;
+}
+----
+
+Zoals je ziet zijn deze methodes vrijwel identiek. Er zit heel veel boilerplate-code in en is er eigenlijk maar één verschil tussen deze methodes en dat is het type die gebruikt wordt. +
+Voorheen was het echter niet mogelijk om deze methode ergens te delen, tenzij je er een util-class voorschreef. 
+Doordat deze twee enums toch al een interface deelden, leek het mij een goed plan om deze methode in de interface te plaatsen. Met een beetje refactorwerk ziet hij er uiteindelijk als volgt uit.
+
+[source, java]
+----
+static <T extends Enum<T> & DuoCommuniceerbaar<T>> List<T> getStatussenObvPredicate(Class<T> enumClass)
+{
+	return Arrays.stream(enumClass.getEnumConstants())
+    		.filter(DuoCommuniceerbaar::isDuoCommuniceerbaar)
+			.collect(toList());
+}
+----
+Doordat dit wel iets zou veranderen aan de aanroep van de methode, de juiste class moet namelijk meegegeven worden, heb ik de methodes wel in de enums laten zien, maar ziet de implementatie nu nog zo uit.
+
+[source, java]
+----
+public static List<BPVStatus> getBronCommuniceerbareStatussen()
+{
+	return DuoCommuniceerbaar.getBronCommuniceerbareStatussen(BPVStatus.class);
+}
+----
+
+Dit is natuurlijk maar één toepassing voor static methods en er zijn er vast meer. Maar ik denk dat dit wel de kracht aangeeft van static methods.
+
+== Default methods 
+
+Kijk en nu komen we echt in de mooie nieuwe functionaliteit van Java 8. Default methods openen namelijk een geheel nieuwe deur voor Java.
+
