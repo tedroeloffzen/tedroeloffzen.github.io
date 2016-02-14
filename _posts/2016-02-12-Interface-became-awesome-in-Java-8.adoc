@@ -87,11 +87,52 @@ default Stream<E> stream() {
 	return StreamSupport.stream(spliterator(), false);
 }
 ----
-Op deze manier wordt het bijvoorbeeld mogelijk om multiple inheritance te gebruiken. 
+Doordat deze `default method` is toegevoegd krijgen alle classes die de Collection-interface implementeren gratis en voor niets de methode `stream()`. +
+
+Een plek waar we dit bijvoorbeeld zelf gebruiken is bij `SerializablePredicate`. Doordat we ook Guava gebruiken hebben we zowel de Predicate van Java als van Guava. Doordat we in onze code maar één type willen gebruiken, die ook nog eens serializable is, is de interface `SerializablePredicate` in het leven geroepen. Dit is een interface die extend van de Guava-predicate, de Java-predicate en Serializable. Normaliter was het echter niet mogelijk om deze interface echter als `Functional interface` te gebruiken. Dit wordt veroorzaakt doordat de Java- en Guava-versie van Predicate niet dezelfde methode vereisen. Dit is als volgt opgelost met een `Default method`.
+
+[source, java]
+----
+@Override
+public default boolean apply(T t)
+{
+	return test(t);
+}
+----
+Op deze manier krijg één van de twee methodes een body en blijft er maar één abstract method over. Hierdoor blijft ook deze interface een `Functional interface` en kan deze derhalve als `lambda` gebruikt worden. +
+
+Met `default methods` wordt het nu bijvoorbeeld ook mogelijk om multiple inheritance te gebruiken. 
 
 === Multiple inheritance
 Multiple inheritance wordt als volgt omschreven door https://en.wikipedia.org/wiki/Multiple_inheritance[wikipedia]:  *_Multiple inheritance_* _is a feature of some object-oriented computer programming languages in which an object or class can inherit characteristics and features from more than one parent object or parent class._ +
 
+In Java 8 is dat deels mogelijk gemaakt d.m.v. interfaces met default methods. Ik zeg hier heel bewust deels, omdat het multiple inheritance m.b.t. state niet mogelijk is, omdat interface geen state hebben. 
+[source, java]
+----
+public interface Logger
+{
+	default void log(String string)
+   	{
+   		System.out.println(string);
+   	}
+}
 
+public interface Adder
+{
+	default int add(int i1, int i2)
+   	{
+   		return i1 + i2;
+   	}
+}
+
+public class LoggingAdder implements Logger, Adder
+{
+	public static void main(String[] args)
+	{
+		LoggingAdder la = new LoggingAdder();
+		la.log("Uitkomst van 4 + 5 = " + la.add(4, 5));
+	}
+}
+----
 === Multiple inheritance problem
 
