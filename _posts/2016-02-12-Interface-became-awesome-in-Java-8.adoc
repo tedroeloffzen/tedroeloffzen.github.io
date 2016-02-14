@@ -134,5 +134,39 @@ public class LoggingAdder implements Logger, Adder
 	}
 }
 ----
+Zoals te zien is kan LoggingAdder de `Default methods` van zowel Logger als Adder gebruiken. op deze manier is `Multiple inheritance` mogelijk gemaakt.
+
 === Multiple inheritance problem
+Met het mogelijk maken van multiple inheritance komt wel een volgend probleem om de hoek kijken. Het zogenaamde `Daimond problem`. Dit wil zeggen dat wanneer er meerdere interfaces met dezelfde default method worden geïmplementeerd, de compiler niet meer weet welke methode gebruikt moet worden. Dit kan opgelost worden door in die class de methode te overriden en dan expliciet aan te geven van welke interface de methode gebruikt moet worden. Dit ziet er dan alsvolgt uit.
+[source, java]
+----
+public interface Logger1
+{
+	default void log(String string1)
+	{
+		System.out.println(string1);
+	}
+}
+
+public interface Logger2
+{
+	default void log(String string1)
+	{
+		System.out.println(string1);
+	}
+}
+
+public class LoggingObject implements Logger1, Logger2
+{
+	@Override
+	public void log(Strint string1)
+	{
+		Logger1.log(string1);
+	}
+}
+----
+Het bovenstaande voorbeeld is natuurlijk erg eenvoudig, helemaal omdat beide interfaces ook nog eens dezelfde functionaliteit bevatten. Het kiezen van de juiste interface zou wellicht ook at runtime kunnen en op die manier bijvoorbeeld een soort `feature toggles` mogelijk te maken. Dit heb ik echter niet getest, maar zal wellicht leuk zijn voor een volgende blog.
+
+== Conclusie
+Met de komst van Java 8 is er veel veranderd m.b.t. de interface. De toepassingen voor interface zijn met de komst van `static methods` en `default methods` alleen maar groter geworden. Daarnaast is door de komst van `default methods` de kloof tussen de interface en de abstract class kleiner geworden. Tevens is `multiple inheritance` deels mogelijk gemaakt en dat is een feature dat de Java nog niet eerder heeft gehad. 
 
