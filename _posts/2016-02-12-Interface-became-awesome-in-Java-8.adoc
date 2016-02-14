@@ -78,5 +78,20 @@ Dit is natuurlijk maar één toepassing voor static methods en er zijn er vast m
 
 == Default methods 
 
-Kijk en nu komen we echt in de mooie nieuwe functionaliteit van Java 8. Default methods openen namelijk een geheel nieuwe deur voor Java.
+Kijk en nu komen we echt in de mooie nieuwe functionaliteit van Java 8. Default methods openen namelijk een geheel nieuwe deur voor Java. Bij het refactoren van Java en het toevoegen van `Streams` en `Lambda's` is er gekeken hoe dit op een zo'n goed mogelijke manier gedaan kon worden. Doordat de ontwikkelaars elke collection binnen Java de mogelijkheid wilde geven om als `Stream` te gebruiken, wilde ze een abstract method stream() toevoegen aan de collection-interface. Echter de implementatie van die methode is in elke subclass hetzelfde. Dit is één van de oorzaken geweest dat men `default methods` heeft gecreëerd. +
+Een methode, in een interface, kan als `default` gemarkeerd worden, door de methode een body te geven en het keyword `default` +
+Zoals in `Collection.java`
+[source, java]
+----
+default Stream<E> stream() {
+	return StreamSupport.stream(spliterator(), false);
+}
+----
+Op deze manier wordt het bijvoorbeeld mogelijk om multiple inheritance te gebruiken. 
+
+=== Multiple inheritance
+Multiple inheritance wordt als volgt omschreven door https://en.wikipedia.org/wiki/Multiple_inheritance[wikipedia]:  *_Multiple inheritance_* _is a feature of some object-oriented computer programming languages in which an object or class can inherit characteristics and features from more than one parent object or parent class._ +
+
+
+=== Multiple inheritance problem
 
