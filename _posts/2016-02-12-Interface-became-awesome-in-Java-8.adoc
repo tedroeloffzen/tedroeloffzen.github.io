@@ -9,10 +9,15 @@ Dit bracht mij op het idee om eens goed te gaan kijken naar het type `interface`
 
 De interface is toch één van de belangrijkste bouwstenen van Java. Buitengewoon handig bij het schrijven van een API, maar tot Java 8 ook wel een beetje beperkt. Wanneer je een implementatie van een interface methode wilde kunnen hergebruiken in meerdere classes, dan zat je alweer vaak vast aan een (abstracte) class, maar die past niet altijd in je class hierarchy. Dan moet je code gaan dupliceren of nog wat anders proberen. Gelukkig heeft Java 8 twee nieuwe features voor de interface toegevoegd.
 
-== Static methods
-Sinds Java 8 is het mogelijk om static methods toe te voegen aan interfaces.
-Voorheen hadden we 2 enums die een vrijwel identieke implementatie van een aantal methodes hadden.
+== Functional interfaces
+Er is een nieuw type interface toegevoegd in Java 8, de zogenaamde Functional Interface. Dit is een interface met maar één abstract method. Dit is te doen door de annotatie `@FunctionalInterface` aan de interface toe te voegen. Dit is geen vereiste. Elke interface met maar één abstract method is in principe een functional interface, echter wanneer de annotatie eraan toegevoegd is, wordt door de compiler ook gecheckt of er maar één abstact method is. +
 
+De reden dat dit type interface toegevoegd is, heeft te maken met een andere nieuwe toevoeging in Java 8, namelijk lambda's. Ook wel eens anonymous functions genoemd. Wat lambda's precies zijn en hoe je ze in kunt zetten, is wellicht iets voor een volgende blog.
+
+== Static methods
+Een andere toevoeging in Java 8 is de mogelijkheid om static methods toe te voegen aan interfaces. Voorheen was je genoodzaakt om static methods in de class zelf, in een (abstract) superclass of in een soort util-class toe te voegen. Dit had als nadeel dat je code die bij elkaar hoorde, niet altijd netjes bij elkaar kon plaatsen. Bijvoorbeeld bij enums die een interface implementeerde, aangezien inheritance bij enums niet is toegestaan. +
+
+Voorheen hadden we bijvoorbeeld 2 enums die een vrijwel identieke implementatie van een aantal methodes hadden. +
 `BPVStatus`
 [source, java]
 ----
@@ -29,7 +34,7 @@ public static List<BPVStatus> getBronCommuniceerbareStatussen()
 	return result;
 }
 ----
-en bij `VerbintenisStatus`
+`VerbintenisStatus`
 [source, java]
 ----
 public static List<VerbintenisStatus> getBronCommuniceerbareStatussen()
@@ -46,7 +51,7 @@ public static List<VerbintenisStatus> getBronCommuniceerbareStatussen()
 }
 ----
 
-Zoals je ziet zijn deze methodes vrijwel identiek. Er zit heel veel boilerplate-code in en is er eigenlijk maar één verschil tussen deze methodes en dat is het type die gebruikt wordt. +
+Zoals je ziet zijn deze methodes vrijwel identiek. Er zit heel veel boilerplate-code in en er is eigenlijk maar één verschil tussen deze methodes en dat is het type dat gebruikt wordt. +
 Voorheen was het echter niet mogelijk om deze methode ergens te delen, tenzij je er een util-class voorschreef. 
 Doordat deze twee enums toch al een interface deelden, leek het mij een goed plan om deze methode in de interface te plaatsen. Met een beetje refactorwerk ziet hij er uiteindelijk als volgt uit.
 
