@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Netter coden door Java 8 Interfaces!</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//tedroeloffzen.github.io/themes/Casper/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="//tedroeloffzen.github.io/themes/Casper/assets/css/screen.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+
+    <link rel="canonical" href="https://tedroeloffzen.github.io/2016/02/14/Netter-coden-door-Java-8-Interfaces.html" />
+    
+    <meta property="og:site_name" content="Personal coding blog" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Netter coden door Java 8 Interfaces!" />
+    <meta property="og:description" content="Interfaces FTW! In een vorig blog, en de daaraan gerelateerde blogs, is gesproken over CDI en alle toffe dingen die gaan kunnen worden met CDI. Een van de mooie zaken die je met CDI mooi op kunt lossen is dat..." />
+    <meta property="og:url" content="https://tedroeloffzen.github.io/2016/02/14/Netter-coden-door-Java-8-Interfaces.html" />
+    <meta property="article:published_time" content="2016-02-13T23:00:00.000Z" />
+    <meta property="article:modified_time" content="2016-02-15T20:00:46.836Z" />
+    <meta property="article:tag" content="java" />
+    <meta property="article:tag" content="interface" />
+    <meta property="article:tag" content="default method" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Netter coden door Java 8 Interfaces!" />
+    <meta name="twitter:description" content="Interfaces FTW! In een vorig blog, en de daaraan gerelateerde blogs, is gesproken over CDI en alle toffe dingen die gaan kunnen worden met CDI. Een van de mooie zaken die je met CDI mooi op kunt lossen is dat..." />
+    <meta name="twitter:url" content="https://tedroeloffzen.github.io/2016/02/14/Netter-coden-door-Java-8-Interfaces.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Personal coding blog",
+    "author": {
+        "@type": "Person",
+        "name": null,
+        "image": "https://avatars.githubusercontent.com/u/1227557?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": null
+    },
+    "headline": "Netter coden door Java 8 Interfaces!",
+    "url": "https://tedroeloffzen.github.io/2016/02/14/Netter-coden-door-Java-8-Interfaces.html",
+    "datePublished": "2016-02-13T23:00:00.000Z",
+    "dateModified": "2016-02-15T20:00:46.836Z",
+    "keywords": "java,  interface,  default method",
+    "description": "Interfaces FTW! In een vorig blog, en de daaraan gerelateerde blogs, is gesproken over CDI en alle toffe dingen die gaan kunnen worden met CDI. Een van de mooie zaken die je met CDI mooi op kunt lossen is dat..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="Personal coding blog" href="https://tedroeloffzen.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-java tag-interface tag-default-method">
+
+    
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        <a class="back-button icon-arrow-left" href="https://tedroeloffzen.github.io">Home</a>
+        <!-- <a class="subscribe-button icon-feed" href="https://tedroeloffzen.github.io/rss/">Subscribe</a> -->
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post tag-java tag-interface tag-default-method">
+
+        <header class="post-header">
+            <h1 class="post-title">Netter coden door Java 8 Interfaces!</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-02-14">14 February 2016</time>  on <a href="https://tedroeloffzen.github.io/tag/java">java</a>, <a href="https://tedroeloffzen.github.io/tag/interface"> interface</a>, <a href="https://tedroeloffzen.github.io/tag/default-method"> default method</a>
+            </section>
+        </header>
+
+        <section class="post-content">
+            <div class="sect1">
+<h2 id="_interfaces_ftw">Interfaces FTW!</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In een <a href="https://topicusonderwijs.github.io/2016/01/28/C-D-I-Vette-truukjes-met-Instance.html">vorig blog</a>, en de daaraan gerelateerde blogs, is gesproken over CDI en alle toffe dingen die gaan kunnen worden met CDI.
+Een van de mooie zaken die je met CDI mooi op kunt lossen is dat je gemakkelijk één of meerdere instanties van een bepaalde interface kunt laten injecteren.
+Dit bracht mij op het idee om eens goed te gaan kijken naar het type <code>interface</code>.<br></p>
+</div>
+<div class="paragraph">
+<p>De interface is toch één van de belangrijkste bouwstenen van Java. Buitengewoon handig bij het schrijven van een API, maar tot Java 8 ook wel een beetje beperkt. Wanneer je een implementatie van een interface methode wilde kunnen hergebruiken in meerdere classes, dan zat je alweer vaak vast aan een (abstracte) class, maar die past niet altijd in je class hierarchy. Dan moet je code gaan dupliceren of nog wat anders proberen. Gelukkig heeft Java 8 een aantal nieuwe features aan de interface toegevoegd.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_functional_interfaces">Functional interfaces</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Deze zitten al geruime tijd in Java, alleen sinds Java 8 hebben ze daadwerkelijk een naam en een unique functie gekregen. Een Functional interface is een interface met maar één abstract method, zoals de <code>Runnable</code> interface die al sinds jaar en dag in Java zit.</p>
+</div>
+<div class="paragraph">
+<p>Een interface kan gemarkeerd worden als een Functional interface door de annotatie <code>@FunctionalInterface</code> aan de interface toe te voegen. Dit is geen vereiste. Elke interface met maar één abstract method is in principe een functional interface, echter wanneer de annotatie eraan toegevoegd is, wordt door de compiler ook gecheckt of er maar één abstact method is.<br></p>
+</div>
+<div class="paragraph">
+<p>De reden dat dit type interface nu zo belangrijk is, heeft te maken met een andere nieuwe toevoeging in Java 8, namelijk lambda&#8217;s. Ook wel eens anonymous functions genoemd. Het is met lambda&#8217;s, zeker in combinatie met de Streams-api erg eenvoudig om nettere en duidelijkere code te schrijven wanneer je met collections werkt. Wat lambda&#8217;s precies zijn en hoe je ze in kunt zetten, is wellicht een te groot onderwerp voor nu en interessant voor een volgende blog.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_static_methods">Static methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Eén van de nieuwe features in Java 8 is de mogelijkheid om static methods toe te voegen aan interfaces. Voorheen was je genoodzaakt om static methods in de class zelf, in een (abstract) superclass of in een soort util-class toe te voegen. Dit had als nadeel dat je code die bij elkaar hoorde, niet altijd netjes bij elkaar kon plaatsen. Bijvoorbeeld bij enums die een interface implementeerde, aangezien inheritance bij enums niet is toegestaan.<br></p>
+</div>
+<div class="paragraph">
+<p>Voorheen hadden we bijvoorbeeld 2 enums die een vrijwel identieke implementatie van een aantal methodes hadden.<br>
+<code>BPVStatus</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public static List&lt;BPVStatus&gt; getBronCommuniceerbareStatussen()
+{
+	List&lt;BPVStatus&gt; result = new ArrayList&lt;BPVStatus&gt;();
+	for (BPVStatus status : values())
+	{
+		if (status.isDuoCommuniceerbaar())
+		{
+			result.add(status);
+		}
+    }
+	return result;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>VerbintenisStatus</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public static List&lt;VerbintenisStatus&gt; getBronCommuniceerbareStatussen()
+{
+	List&lt;VerbintenisStatus&gt; result = new ArrayList&lt;VerbintenisStatus&gt;();
+	for (VerbintenisStatus status : values())
+	{
+		if (status.isDuoCommuniceerbaar())
+		{
+			result.add(status);
+		}
+	}
+	return result;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Zoals je ziet zijn deze methodes vrijwel identiek. Er zit heel veel boilerplate-code in en er is eigenlijk maar één verschil tussen deze methodes en dat is het type dat gebruikt wordt.<br>
+Voorheen was het echter niet mogelijk om deze methode ergens te delen, tenzij je er een util-class voorschreef.
+Doordat deze twee enums toch al een interface deelden, leek het mij een goed plan om deze methode in de interface te plaatsen. Met een beetje refactorwerk ziet hij er uiteindelijk als volgt uit.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">static &lt;T extends Enum&lt;T&gt; &amp; DuoCommuniceerbaar&lt;T&gt;&gt; List&lt;T&gt; getStatussenObvPredicate(Class&lt;T&gt; enumClass)
+{
+	return Arrays.stream(enumClass.getEnumConstants())
+    		.filter(DuoCommuniceerbaar::isDuoCommuniceerbaar)
+			.collect(toList());
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Zoals je ziet is de methode van terug gebracht in grootte, is de boilerplate-code verminderd, maar is doel van de methode nog wel duidelijk.
+Doordat dit wel iets zou veranderen aan de aanroep van de methode, de juiste class moet namelijk meegegeven worden als parameter, heb ik de methodes wel in de enums laten zitten, maar ziet de implementatie er nu nog zo uit.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public static List&lt;BPVStatus&gt; getBronCommuniceerbareStatussen()
+{
+	return DuoCommuniceerbaar.getBronCommuniceerbareStatussen(BPVStatus.class);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dit is natuurlijk maar één toepassing voor static methods en er zijn er vast meer. Maar ik denk dat dit wel de kracht aangeeft van static methods.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_default_methods">Default methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kijk en nu komen we echt in de mooie nieuwe functionaliteit van Java 8. Default methods openen namelijk een geheel nieuwe deur voor Java. Bij het refactoren van Java en het toevoegen van <code>Streams</code> en <code>Lambda&#8217;s</code> is er gekeken hoe dit op een zo&#8217;n goed mogelijke manier gedaan kon worden. Doordat de ontwikkelaars elke collection binnen Java de mogelijkheid wilde geven om als <code>Stream</code> te gebruiken, wilde ze een abstract method stream() toevoegen aan de collection-interface. Echter de implementatie van die methode is in elke subclass hetzelfde. Dit is één van de oorzaken geweest dat men <code>default methods</code> heeft gecreëerd.<br>
+Een methode, in een interface, kan als <code>default</code> gemarkeerd worden, door de methode een body te geven en het keyword <code>default</code><br>
+Zoals in <code>Collection.java</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">default Stream&lt;E&gt; stream() {
+	return StreamSupport.stream(spliterator(), false);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Doordat deze <code>default method</code> is toegevoegd krijgen alle classes die de Collection-interface implementeren gratis en voor niets de methode <code>stream()</code>.<br></p>
+</div>
+<div class="paragraph">
+<p>Een plek waar we dit bijvoorbeeld zelf gebruiken is bij <code>SerializablePredicate</code>. Doordat we ook Guava gebruiken hebben we zowel de Predicate van Java als van Guava. Doordat we in onze code maar één type willen gebruiken, die ook nog eens serializable is, is de interface <code>SerializablePredicate</code> in het leven geroepen. Dit is een interface die extend van de Guava-predicate, de Java-predicate en Serializable. Normaliter was het echter niet mogelijk om deze interface echter als <code>Functional interface</code> te gebruiken. Dit wordt veroorzaakt doordat de Java- en Guava-versie van Predicate niet dezelfde methode vereisen. Dit is als volgt opgelost met een <code>Default method</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Override
+public default boolean apply(T t)
+{
+	return test(t);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Op deze manier krijg één van de twee methodes een body en blijft er maar één abstract method over. Hierdoor blijft ook deze interface een <code>Functional interface</code> en kan deze derhalve als <code>lambda</code> gebruikt worden.<br></p>
+</div>
+<div class="paragraph">
+<p>Een andere plek waar ikzelf <code>Default methods</code> gebruik is in unit-tests. De tests zijn vaak hetzelfde, alleen de manier waarop ze hun input krijgen niet. De tests zijn dan geïmplementeerd als <code>Default methods</code> en er zijn <code>Abstract methods</code> toegevoegd om de tests van hun input te voorzien.<br></p>
+</div>
+<div class="paragraph">
+<p>Daarnaast wordt het met <code>default methods</code> bijvoorbeeld ook mogelijk om multiple inheritance te gebruiken.</p>
+</div>
+<div class="sect2">
+<h3 id="_multiple_inheritance">Multiple inheritance</h3>
+<div class="paragraph">
+<p>Multiple inheritance wordt als volgt omschreven door <a href="https://en.wikipedia.org/wiki/Multiple_inheritance">wikipedia</a>:  <strong><em>Multiple inheritance</em></strong> <em>is a feature of some object-oriented computer programming languages in which an object or class can inherit characteristics and features from more than one parent object or parent class.</em><br></p>
+</div>
+<div class="paragraph">
+<p>In Java 8 is dat deels mogelijk gemaakt d.m.v. interfaces met default methods. Ik zeg hier heel bewust deels, omdat het multiple inheritance m.b.t. state niet mogelijk is, omdat interface geen state hebben. Hier een klein voorbeeld.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Logger
+{
+	default void log(String string)
+   	{
+   		System.out.println(string);
+   	}
+}
+
+public interface Adder
+{
+	default int add(int i1, int i2)
+   	{
+   		return i1 + i2;
+   	}
+}
+
+public class LoggingAdder implements Logger, Adder
+{
+	public static void main(String[] args)
+	{
+		LoggingAdder la = new LoggingAdder();
+		la.log("Uitkomst van 4 + 5 = " + la.add(4, 5));
+	}
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Zoals te zien is kan LoggingAdder de <code>Default methods</code> van zowel Logger als Adder gebruiken. op deze manier is <code>Multiple inheritance</code> mogelijk gemaakt. Dit zijn features die wij ook toe zouden kunnen en hopelijk op die manier onze, vaak zeer uitgebreide, class-hierarchy wat meer te structureren.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_multiple_inheritance_problem">Multiple inheritance problem</h3>
+<div class="paragraph">
+<p>Met het mogelijk maken van multiple inheritance komt wel een volgend probleem om de hoek kijken. Het zogenaamde <code>Daimond problem</code>. Dit wil zeggen dat wanneer er meerdere interfaces met dezelfde default method worden geïmplementeerd, de compiler niet meer weet welke methode gebruikt moet worden. Dit kan opgelost worden door in die class de methode te overriden en dan expliciet aan te geven van welke interface de methode gebruikt moet worden. Dit ziet er dan alsvolgt uit.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public interface Logger1
+{
+	default void log(String string1)
+	{
+		System.out.println(string1);
+	}
+}
+
+public interface Logger2
+{
+	default void log(String string1)
+	{
+		System.out.println(string1);
+	}
+}
+
+public class LoggingObject implements Logger1, Logger2
+{
+	@Override
+	public void log(Strint string1)
+	{
+		Logger1.log(string1);
+	}
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Het bovenstaande voorbeeld is natuurlijk erg eenvoudig, helemaal omdat beide interfaces ook nog eens dezelfde functionaliteit bevatten. Het kiezen van de juiste interface zou wellicht ook at runtime kunnen en op die manier bijvoorbeeld een soort <code>feature toggles</code> mogelijk te maken. Dit heb ik echter niet getest, maar zal wellicht leuk zijn voor een volgende blog.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusie">Conclusie</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Met de komst van Java 8 is er veel veranderd m.b.t. de interface. De toepassingen voor interface zijn met de komst van <code>static methods</code> en <code>default methods</code> alleen maar groter geworden. Code is in sommige gevallen beter te structureren en te groeperen. Je zou op die manier ook de functionaliteit van je class uit kunnen breiden, zonder de class-hierarchy te vergroten. Al met al kunnen de wijzigingen m.b.t. interfaces een grote impact hebben op onze codebase.</p>
+</div>
+</div>
+</div>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="" style="background-image: url(https://avatars.githubusercontent.com/u/1227557?v=3)"><span class="hidden">'s Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href=""></a></h4>
+
+                    <p>Read <a href="">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Netter%20coden%20door%20Java%208%20Interfaces!&amp;url=https://tedroeloffzen.github.io/2016/02/14/Netter-coden-door-Java-8-Interfaces.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://tedroeloffzen.github.io/2016/02/14/Netter-coden-door-Java-8-Interfaces.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://tedroeloffzen.github.io/2016/02/14/Netter-coden-door-Java-8-Interfaces.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+
+    </article>
+
+</main>
+
+
+
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="https://tedroeloffzen.github.io">Personal coding blog</a> &copy; 2016</section>
+        <section class="poweredby">Proudly published with <a href="http://hubpress.io">HubPress</a></section>
+    </footer>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <script type="text/javascript" src="//tedroeloffzen.github.io/themes/Casper/assets/js/jquery.fitvids.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//tedroeloffzen.github.io/themes/Casper/assets/js/index.js?v=1.0.0"></script>
+
+</body>
+</html>
