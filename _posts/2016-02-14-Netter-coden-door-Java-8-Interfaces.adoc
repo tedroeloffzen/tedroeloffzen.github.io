@@ -8,15 +8,17 @@ In een https://topicusonderwijs.github.io/2016/01/28/C-D-I-Vette-truukjes-met-In
 Een van de mooie zaken die je met CDI mooi op kunt lossen is dat je gemakkelijk één of meerdere instanties van een bepaalde interface kunt laten injecteren. 
 Dit bracht mij op het idee om eens goed te gaan kijken naar het type `interface`. + 
 
-De interface is toch één van de belangrijkste bouwstenen van Java. Buitengewoon handig bij het schrijven van een API, maar tot Java 8 ook wel een beetje beperkt. Wanneer je een implementatie van een interface methode wilde kunnen hergebruiken in meerdere classes, dan zat je alweer vaak vast aan een (abstracte) class, maar die past niet altijd in je class hierarchy. Dan moet je code gaan dupliceren of nog wat anders proberen. Gelukkig heeft Java 8 twee nieuwe features voor de interface toegevoegd.
+De interface is toch één van de belangrijkste bouwstenen van Java. Buitengewoon handig bij het schrijven van een API, maar tot Java 8 ook wel een beetje beperkt. Wanneer je een implementatie van een interface methode wilde kunnen hergebruiken in meerdere classes, dan zat je alweer vaak vast aan een (abstracte) class, maar die past niet altijd in je class hierarchy. Dan moet je code gaan dupliceren of nog wat anders proberen. Gelukkig heeft Java 8 een aantal nieuwe features aan de interface toegevoegd.
 
 == Functional interfaces
-Er is een nieuw type interface toegevoegd in Java 8, de zogenaamde Functional Interface. Dit is een interface met maar één abstract method. Dit is te doen door de annotatie `@FunctionalInterface` aan de interface toe te voegen. Dit is geen vereiste. Elke interface met maar één abstract method is in principe een functional interface, echter wanneer de annotatie eraan toegevoegd is, wordt door de compiler ook gecheckt of er maar één abstact method is. +
+Deze zitten al geruime tijd in Java, alleen sinds Java 8 hebben ze daadwerkelijk een naam en een unique functie gekregen. Een Functional interface is een interface met maar één abstract method, zoals de `Runnable` interface die al sinds jaar en dag in Java zit. 
 
-De reden dat dit type interface toegevoegd is, heeft te maken met een andere nieuwe toevoeging in Java 8, namelijk lambda's. Ook wel eens anonymous functions genoemd. Wat lambda's precies zijn en hoe je ze in kunt zetten, is wellicht iets voor een volgende blog.
+Een interface kan gemarkeerd worden als een Functional interface door de annotatie `@FunctionalInterface` aan de interface toe te voegen. Dit is geen vereiste. Elke interface met maar één abstract method is in principe een functional interface, echter wanneer de annotatie eraan toegevoegd is, wordt door de compiler ook gecheckt of er maar één abstact method is. +
+
+De reden dat dit type interface nu zo belangrijk is, heeft te maken met een andere nieuwe toevoeging in Java 8, namelijk lambda's. Ook wel eens anonymous functions genoemd. Het is met lambda's, zeker in combinatie met de Streams-api erg eenvoudig om nettere en duidelijkere code te schrijven wanneer je met collections werkt. Wat lambda's precies zijn en hoe je ze in kunt zetten, is wellicht een te groot onderwerp voor nu en interessant voor een volgende blog.
 
 == Static methods
-Een andere toevoeging in Java 8 is de mogelijkheid om static methods toe te voegen aan interfaces. Voorheen was je genoodzaakt om static methods in de class zelf, in een (abstract) superclass of in een soort util-class toe te voegen. Dit had als nadeel dat je code die bij elkaar hoorde, niet altijd netjes bij elkaar kon plaatsen. Bijvoorbeeld bij enums die een interface implementeerde, aangezien inheritance bij enums niet is toegestaan. +
+Eén van de nieuwe features in Java 8 is de mogelijkheid om static methods toe te voegen aan interfaces. Voorheen was je genoodzaakt om static methods in de class zelf, in een (abstract) superclass of in een soort util-class toe te voegen. Dit had als nadeel dat je code die bij elkaar hoorde, niet altijd netjes bij elkaar kon plaatsen. Bijvoorbeeld bij enums die een interface implementeerde, aangezien inheritance bij enums niet is toegestaan. +
 
 Voorheen hadden we bijvoorbeeld 2 enums die een vrijwel identieke implementatie van een aantal methodes hadden. +
 `BPVStatus`
@@ -65,7 +67,8 @@ static <T extends Enum<T> & DuoCommuniceerbaar<T>> List<T> getStatussenObvPredic
 			.collect(toList());
 }
 ----
-Doordat dit wel iets zou veranderen aan de aanroep van de methode, de juiste class moet namelijk meegegeven worden, heb ik de methodes wel in de enums laten zien, maar ziet de implementatie nu nog zo uit.
+Zoals je ziet is de methode van terug gebracht in grootte, is de boilerplate-code verminderd, maar is doel van de methode nog wel duidelijk.
+Doordat dit wel iets zou veranderen aan de aanroep van de methode, de juiste class moet namelijk meegegeven worden als parameter, heb ik de methodes wel in de enums laten zitten, maar ziet de implementatie er nu nog zo uit.
 
 [source, java]
 ----
@@ -102,12 +105,15 @@ public default boolean apply(T t)
 ----
 Op deze manier krijg één van de twee methodes een body en blijft er maar één abstract method over. Hierdoor blijft ook deze interface een `Functional interface` en kan deze derhalve als `lambda` gebruikt worden. +
 
-Met `default methods` wordt het nu bijvoorbeeld ook mogelijk om multiple inheritance te gebruiken. 
+Een andere plek waar ikzelf `Default methods` gebruik is in unit-tests. De tests zijn vaak hetzelfde, alleen de manier waarop ze hun input krijgen niet. De tests zijn dan geïmplementeerd als `Default methods` en er zijn `Abstract methods` toegevoegd om de tests van hun input te voorzien. +
+
+Daarnaast wordt het met `default methods` bijvoorbeeld ook mogelijk om multiple inheritance te gebruiken. 
 
 === Multiple inheritance
 Multiple inheritance wordt als volgt omschreven door https://en.wikipedia.org/wiki/Multiple_inheritance[wikipedia]:  *_Multiple inheritance_* _is a feature of some object-oriented computer programming languages in which an object or class can inherit characteristics and features from more than one parent object or parent class._ +
 
-In Java 8 is dat deels mogelijk gemaakt d.m.v. interfaces met default methods. Ik zeg hier heel bewust deels, omdat het multiple inheritance m.b.t. state niet mogelijk is, omdat interface geen state hebben. 
+In Java 8 is dat deels mogelijk gemaakt d.m.v. interfaces met default methods. Ik zeg hier heel bewust deels, omdat het multiple inheritance m.b.t. state niet mogelijk is, omdat interface geen state hebben. Hier een klein voorbeeld. 
+
 [source, java]
 ----
 public interface Logger
@@ -135,7 +141,7 @@ public class LoggingAdder implements Logger, Adder
 	}
 }
 ----
-Zoals te zien is kan LoggingAdder de `Default methods` van zowel Logger als Adder gebruiken. op deze manier is `Multiple inheritance` mogelijk gemaakt.
+Zoals te zien is kan LoggingAdder de `Default methods` van zowel Logger als Adder gebruiken. op deze manier is `Multiple inheritance` mogelijk gemaakt. Dit zijn features die wij ook toe zouden kunnen en hopelijk op die manier onze, vaak zeer uitgebreide, class-hierarchy wat meer te structureren.
 
 === Multiple inheritance problem
 Met het mogelijk maken van multiple inheritance komt wel een volgend probleem om de hoek kijken. Het zogenaamde `Daimond problem`. Dit wil zeggen dat wanneer er meerdere interfaces met dezelfde default method worden geïmplementeerd, de compiler niet meer weet welke methode gebruikt moet worden. Dit kan opgelost worden door in die class de methode te overriden en dan expliciet aan te geven van welke interface de methode gebruikt moet worden. Dit ziet er dan alsvolgt uit.
@@ -169,5 +175,5 @@ public class LoggingObject implements Logger1, Logger2
 Het bovenstaande voorbeeld is natuurlijk erg eenvoudig, helemaal omdat beide interfaces ook nog eens dezelfde functionaliteit bevatten. Het kiezen van de juiste interface zou wellicht ook at runtime kunnen en op die manier bijvoorbeeld een soort `feature toggles` mogelijk te maken. Dit heb ik echter niet getest, maar zal wellicht leuk zijn voor een volgende blog.
 
 == Conclusie
-Met de komst van Java 8 is er veel veranderd m.b.t. de interface. De toepassingen voor interface zijn met de komst van `static methods` en `default methods` alleen maar groter geworden. Daarnaast is door de komst van `default methods` de kloof tussen de interface en de abstract class kleiner geworden. Tevens is `multiple inheritance` deels mogelijk gemaakt en dat is een feature dat de Java nog niet eerder heeft gehad. 
+Met de komst van Java 8 is er veel veranderd m.b.t. de interface. De toepassingen voor interface zijn met de komst van `static methods` en `default methods` alleen maar groter geworden. Code is in sommige gevallen beter te structureren en te groeperen. Je zou op die manier ook de functionaliteit van je class uit kunnen breiden, zonder de class-hierarchy te vergroten. Al met al kunnen de wijzigingen m.b.t. interfaces een grote impact hebben op onze codebase.
 
