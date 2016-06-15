@@ -1,0 +1,17 @@
+= The softer side of programming. Part 1
+Ted Roeloffzen
+:hp-tags: java, interface, default method
+
+== Doing what you love!
+When I started thinking about writing a blog post, I was wondering I wanted to do that. That question was surprisingly easy to answer. Simply because I just love to help people and spread knowledge. +
+
+At the company where I work, I'm usually the person that the projectmanager would turn to when a new (junior) developer joined the team or company. First of all because i've been working on that product for a long time, therefore I know a lot of choice that have been made and a lot of intricacies of the product. But mostly they turn to me, because I just love to do that. I really love taking someone under my wing and showing them the ropes, so to speak. +
+
+So the first thing I would like to teach you is: *Do what you love!* +
+I know we all have to do a lot of things we don't like doing. Things like doing dishes, doing taxes, fixing that annoying bug your boss keeps harassing you about, just to name a few. Just spend most of your time doing things you love. This will give you energy to endure the things you have to do. 
+
+== Communication is key
+
+== It's okay to say no
+
+== Teach others
