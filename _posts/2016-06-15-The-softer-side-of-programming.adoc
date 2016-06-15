@@ -1,0 +1,3 @@
+= The softer side of programming
+Ted Roeloffzen
+:hp-tags: java, interface, default method
